@@ -1,8 +1,43 @@
 import 'package:flutter/material.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'home_page.dart'; // We will create this next
 
 class LoginPage extends StatelessWidget {
   const LoginPage({super.key});
 
+  // Function to request permissions
+  Future<void> requestPermissions(BuildContext context) async {
+    // Request location
+    var locationStatus = await Permission.location.request();
+
+    // Request notification
+    var notificationStatus = await Permission.notification.request();
+
+    // Check if both granted
+    if (locationStatus.isGranted && notificationStatus.isGranted) {
+      // Navigate to Home screen
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => const HomePage()),
+      );
+    } else {
+      // Show alert if permission denied
+      showDialog(
+        context: context,
+        builder: (_) => AlertDialog(
+          title: const Text('Permissions required'),
+          content: const Text(
+              'Location and Notification permissions are required to use the app.'),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text('OK'),
+            )
+          ],
+        ),
+      );
+    }
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -62,12 +97,49 @@ class LoginPage extends StatelessWidget {
               ),
               const SizedBox(height: 24),
               ElevatedButton(
-                onPressed: () {
-                  // TODO: Add location & notification permission logic here
-                  print('Login pressed');
+                onPressed: () async {
+                  // Request location
+                  var locationStatus = await Permission.location.request();
+
+                  // Request notification
+                  var notificationStatus = await Permission.notification.request();
+
+                  if (locationStatus.isGranted && notificationStatus.isGranted) {
+                    // Both permissions granted → go to HomePage
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(builder: (context) => const HomePage()),
+                    );
+                  } else {
+                    // Any permission denied → show popup
+                    showDialog(
+                      context: context,
+                      builder: (_) => AlertDialog(
+                        title: const Text('Permissions required'),
+                        content: const Text(
+                            'Location and Notification permissions are required to use the app.'),
+                        actions: [
+                          TextButton(
+                            onPressed: () {
+                              Navigator.pop(context); // close popup
+                            },
+                            child: const Text('Cancel'),
+                          ),
+                          TextButton(
+                            onPressed: () {
+                              openAppSettings(); // takes user to App Settings
+                              Navigator.pop(context);
+                            },
+                            child: const Text('Open Settings'),
+                          ),
+                        ],
+                      ),
+                    );
+                  }
                 },
                 child: const Text('Login'),
               ),
+
             ],
           ),
         ),
