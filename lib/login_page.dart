@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'home_page.dart'; // We will create this next
+import 'main_scaffold.dart';
+
 
 class LoginPage extends StatelessWidget {
   const LoginPage({super.key});
@@ -108,8 +110,9 @@ class LoginPage extends StatelessWidget {
                     // Both permissions granted → go to HomePage
                     Navigator.pushReplacement(
                       context,
-                      MaterialPageRoute(builder: (context) => const HomePage()),
+                      MaterialPageRoute(builder: (context) => const MainScaffold()),
                     );
+
                   } else {
                     // Any permission denied → show popup
                     showDialog(
