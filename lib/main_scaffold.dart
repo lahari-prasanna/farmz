@@ -1,6 +1,9 @@
 // lib/main_scaffold.dart
 import 'package:flutter/material.dart';
+import 'marketplace_screen.dart';
 import 'home_page.dart';
+import 'sell_farm_produce_screen.dart';
+
 // TODO: import marketplace_screen.dart, community_screen.dart, profile_screen.dart
 
 class MainScaffold extends StatefulWidget {
@@ -16,7 +19,7 @@ class _MainScaffoldState extends State<MainScaffold> {
   // screens for nav items
   final List<Widget> _screens = [
   const HomePage(),          // Home
-  const Placeholder(),       // Marketplace (create later)
+  const MarketplaceScreen(),
   const SizedBox(),          // Plus button handled separately
   const Placeholder(),       // Community (create later)
   const Placeholder(),       // Profile (create later)
@@ -34,19 +37,12 @@ class _MainScaffoldState extends State<MainScaffold> {
 }
 
   void _openSellForm() {
-  showDialog(
-    context: context,
-    builder: (_) => AlertDialog(
-      title: const Text("Sell Your Farm Produce"),
-      content: const Text("Form will be designed later."),
-      actions: [
-        TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text("Close"))
-      ],
-    ),
+  Navigator.push(
+    context,
+    MaterialPageRoute(builder: (_) => const SellFarmProduceScreen()),
   );
 }
+
 
   @override
 Widget build(BuildContext context) {
