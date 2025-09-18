@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'dart:async'; // add this for Timer
+import 'login_page.dart'; // import the new login page
 
 void main() {
   runApp(const FarmZApp());
@@ -20,20 +22,30 @@ class FarmZApp extends StatelessWidget {
 }
 
 // --------------------- Splash Screen ---------------------
+
+
 class SplashScreen extends StatelessWidget {
   const SplashScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    // Navigate to LoginPage after 3 seconds
+    Timer(const Duration(seconds: 3), () {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => const LoginPage()),
+      );
+    });
+
     return Scaffold(
       backgroundColor: Colors.green,
       body: Center(
         child: ClipOval(
           child: Image.asset(
-            'assets/images/logo.png', // your logo path
+            'assets/images/logo.png',
             width: 200,
             height: 200,
-            fit: BoxFit.cover, // ensures image fills the circle
+            fit: BoxFit.cover,
           ),
         ),
       ),
